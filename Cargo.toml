@@ -1,0 +1,10 @@
+[package]
+name = "bedrock-server"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bedrockrs = { git = "https://github.com/bedrock-crustaceans/bedrockrs", branch = "main", features = ["full"] }
+
+tokio = { version = "1.40", features = ["full"] }
+shipyard = { version = "0.7", features = ["parallel", "proc"]}

@@ -2,8 +2,7 @@ use shipyard::Component;
 
 pub mod player;
 pub mod position;
-pub mod entity;
-mod velocity;
+pub mod velocity;
 
 #[derive(Component)]
 pub struct Entity {

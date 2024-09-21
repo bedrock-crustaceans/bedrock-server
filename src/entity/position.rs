@@ -6,11 +6,3 @@ pub struct Pos {
     y: f32,
     z: f32,
 }
-
-#[derive(Component)]
-pub struct Vel {
-    x: f32,
-    y: f32,
-    z: f32,
-}
-

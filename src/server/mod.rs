@@ -1,6 +1,10 @@
+use std::error::Error;
 use bedrockrs::proto::listener::Listener;
 use shipyard::World;
-use crate::player::Player;
+use crate::entity::entity::Entity;
+use crate::entity::player::Player;
+use crate::error::LoginError;
+use crate::login::login;
 
 pub mod builder;
 
@@ -22,14 +26,22 @@ impl Server {
         unimplemented!()
     }
     
-    pub async fn accept(&mut self) -> Player {
-        self.listeners.first().unwrap().accept().await.unwrap();
+    pub async fn accept<F>(&mut self, fnc: F) -> Result<(), LoginError>
+    where F: FnOnce(Player) -> Result<Player, dyn Error> {
+        let conn = self.listeners.first().unwrap().accept().await.unwrap();
         
-        self.ecs_world.add_entity(Player {
-            name: self.name.clone(),
-            xuid: "".to_string(),
-            cache_supported: false,
-            connection: (),
-        })
+        let player = login(conn)?;
+        let player = fnc(player);
+        
+        match player {
+            Ok(player) => self.ecs_world.add_entity((
+                Entity::new()
+            )),
+            Err(_) => {}
+        }
+        
+        
+        
+        Ok(())
     }
 }

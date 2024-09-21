@@ -8,3 +8,5 @@ bedrockrs = { git = "https://github.com/bedrock-crustaceans/bedrockrs", branch =
 
 tokio = { version = "1.40", features = ["full"] }
 shipyard = { version = "0.7", features = ["parallel", "proc"]}
+
+xuid = "1.0"

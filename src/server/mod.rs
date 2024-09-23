@@ -1,8 +1,10 @@
 use std::error::Error;
 use bedrockrs::proto::listener::Listener;
 use shipyard::World;
-use crate::entity::entity::Entity;
+use crate::entity::Entity;
 use crate::entity::player::Player;
+use crate::entity::position::Pos;
+use crate::entity::velocity::Vel;
 use crate::error::LoginError;
 use crate::login::login;
 
@@ -12,7 +14,7 @@ pub struct Server {
     listeners: Vec<Listener>,
     name: String,
     sub_name: String,
-    ecs_world: World,
+    pub world: World,
 }
 
 impl Server {
@@ -27,18 +29,16 @@ impl Server {
     }
     
     pub async fn accept<F>(&mut self, fnc: F) -> Result<(), LoginError>
-    where F: FnOnce(Player) -> Result<Player, dyn Error> {
+    where F: FnOnce((Entity, Player, Pos, Vel)) -> Result<(Entity, Player, Pos, Vel), dyn Error> {
         let conn = self.listeners.first().unwrap().accept().await.unwrap();
         
-        let player = login(conn)?;
+        let player = login(conn, &mut self.world)?;
         let player = fnc(player);
         
-        match player {
-            Ok(player) => self.ecs_world.add_entity((
-                Entity::new()
-            )),
-            Err(_) => {}
-        }
+        let id = match player {
+            Ok(player) => self.world.add_entity(player)
+            Err(err) => return Err(LoginError::Other(err)),
+        };
         
         
         

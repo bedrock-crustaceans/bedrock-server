@@ -24,8 +24,10 @@ impl Server {
         }
     }
 
-    pub async fn stop(&self) {
-        unimplemented!()
+    pub async fn stop(&mut self) {
+        for listener in &mut self.listeners {
+            listener.stop().await;
+        }
     }
     
     pub async fn accept<F>(&mut self, fnc: F) -> Result<(), LoginError>
@@ -36,7 +38,7 @@ impl Server {
         let player = fnc(player);
         
         let id = match player {
-            Ok(player) => self.world.add_entity(player)
+            Ok(player) => self.world.add_entity(player),
             Err(err) => return Err(LoginError::Other(err)),
         };
         

@@ -40,16 +40,19 @@ impl ServerBuilder {
             listeners.push(Listener::new_raknet(
                 self.name.clone(),
                 self.sub_name.clone(),
+                String::from("1.21.0"),
                 self.max_player,
                 0,
                 addr,
                 false,
             ).await.unwrap())
         };
+
         Server {
             listeners,
             name: self.name,
             sub_name: self.sub_name,
+            world: Default::default(),
         }
     }
 }

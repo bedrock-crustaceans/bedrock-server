@@ -7,7 +7,8 @@ async fn main() {
         .name("Server")
         .sub_name("bedrock-rs")
         .listener(SocketAddr::new("127.0.0.1".parse().unwrap(), 19132))
-        .build().await;
+        .build()
+        .await;
     
     server.start().await;
 

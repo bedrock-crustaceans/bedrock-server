@@ -1,7 +1,9 @@
+use bedrockrs::proto::connection::Connection;
 use crate::connection::ConnectionShard;
 use crate::error::LoginError;
 use crate::login::handshake::handshake;
 use crate::login::login::login;
+use crate::login::login::provider::LoginProvider;
 use crate::login::network_settings::network_settings;
 use crate::login::packs::packs;
 use crate::login::play_status::play_status_login;
@@ -30,7 +32,7 @@ macro_rules! handle_login_status {
 }
 
 pub async fn login_sequence(
-    conn: &mut ConnectionShard,
+    conn: &mut Connection,
     mut provider: impl LoginProvider,
 ) -> Result<(), LoginError> {
     network_settings(conn, &mut provider).await?;

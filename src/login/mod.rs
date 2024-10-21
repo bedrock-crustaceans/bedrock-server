@@ -1,4 +1,5 @@
 mod handler;
+mod login;
 
 use std::time::Duration;
 use bedrockrs::proto::connection::Connection;
@@ -11,9 +12,9 @@ use crate::entity::velocity::Vel;
 use crate::login::handler::LoginHandler;
 
 pub async fn login(connection: Connection, world: &mut World, login_handler: impl LoginHandler) -> Result<(Entity, Player, Pos, Vel), LoginError> {
-    let mut shard = connection.into_shard(Duration::from_millis(20), 128).await;
+    let mut shard = connection.into_shards(interval!(Duration::from_millis(20)), 128).await;
     
-    shard.recv();
+
     
     
     todo!()

@@ -6,7 +6,7 @@ edition = "2021"
 [dependencies]
 thiserror = "1.0"
 
-bedrockrs = { git = "https://github.com/bedrock-crustaceans/bedrockrs", branch = "main", features = ["full"] }
+bedrockrs = { path = "../bedrockrs", features = ["full"] }
 
 tokio = { version = "1.40", features = ["full"] }
 shipyard = { version = "0.7", features = ["parallel", "proc"]}
